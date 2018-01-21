@@ -1,0 +1,68 @@
+@layout('master')
+
+@section('content')
+    
+  <div class="row mt-5">
+    <div class="col-md-8 offset-md-2 col-xs-12">
+      <form action="/tasks" method="POST" class="form-inline">
+        {{ csrfField() }}
+        <input type="text" class="col-md-8 form-control mb-2 mr-sm-2" name="title" value="{{ old('title', '') }}" placeholder="Task title">  
+        <button type="submit" class="col btn btn-primary mb-2 form-control">Add Task</button>
+      </form>
+      {{ elIf('<p class="col alert alert-danger">$self</p>', getErrorFor('title'), hasErrorFor('title')) }}
+      @if(old('notification'))
+        <div class="col alert alert-success">
+          {{ old('notification') }}
+        </div>
+      @endif
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col-md-8 offset-md-2 col-xs-12">
+      <div class="card">
+        <div class="card-header text-white bg-success">
+          <h1 class="text-center">Task List</h1>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-bordered">
+            <thead>
+              <tr>
+                <th>SN</th>
+                <th>Title</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @each(task in tasks)
+              <tr>
+                <td class="align-middle">
+                  {{ ($loop.index + 1) }}
+                </td>
+                <td class="align-middle">
+                  {{ task.title }}
+                </td>
+                <td class="align-middle">
+                <form action="{{ 'tasks/' + task.id + '?_method=DELETE' }}" method="POST">
+                  {{ csrfField() }}
+                  <button type="submit" class="btn btn-danger">
+                    <span>DELETE</span>
+                    <span>
+                      <i class="far fa-trash-alt" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </form>
+                </td>
+              </tr>
+              @else
+              <tr>
+                <td colspan="3" class="text-center">No task created yet!</td>
+              </tr>
+              @endeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+@endsection
