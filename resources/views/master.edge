@@ -18,8 +18,9 @@
     socket.on('test', ()=>{
       console.log('test')
     })
-    socket.on('new task added', ()=>{
+    socket.on('sock', ()=>{
       console.log('New task added')
+      socket.emit('handled')
     })
   </script>
 </body>
