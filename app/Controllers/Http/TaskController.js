@@ -2,10 +2,16 @@
 
 const Task = use('App/Models/Task')
 const {validate} = use('Validator')
+const io = require('../../../start/socket')
 
 class TaskController {
   async index ({view}) {
     const tasks = await Task.all()
+    io.on('connection', function (socket) {
+      console.log('new client connection created')
+      socket.emit('test')
+    })
+
     return view.render('tasks.index', {tasks: tasks.toJSON()})
   }
 
@@ -25,7 +31,10 @@ class TaskController {
     await task.save()
 
     session.flash({notification: 'Task added!'})
-
+    io.on('connection', function (socket) {
+      console.log('new client connection created')
+      socket.emit('new task added')
+    })
     return response.redirect('back')
   }
 

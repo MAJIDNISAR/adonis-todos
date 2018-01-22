@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Task List</title>
+  {{script("https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js")}}
   {{css("https://use.fontawesome.com/releases/v5.0.4/css/all.css")}}
   {{css("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css")}}
 </head>
@@ -12,5 +13,14 @@
   <div class="container">
     @!section('content')
   </div>
+  <script>
+    let socket = io('http://localhost:3333');
+    socket.on('test', ()=>{
+      console.log('test')
+    })
+    socket.on('new task added', ()=>{
+      console.log('New task added')
+    })
+  </script>
 </body>
 </html>
